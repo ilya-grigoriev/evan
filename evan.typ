@@ -70,7 +70,7 @@
   scale(y: scale-int, smallcaps(all: true, [EPISODE:#page]))
 }
 
-#let heading-slide(heading_title) = {
+#let heading-1-slide(heading_title) = {
   set page(
     header: none,
     footer: none,
@@ -88,6 +88,12 @@
   heading-counter-style()
 }
 
+#let heading-2-slide(heading_title) = {
+  set align(left)
+  set text(fill: text-color, size: 40pt, weight: "semibold", font: FONT_TEXT)
+  scale(y: scale-int, smallcaps(heading_title, all: true))
+}
+
 #let content-slide(content) = {
   set page(
     header: none,
@@ -103,6 +109,7 @@
   set text(fill: text-color, size: 30pt, weight: "semibold", font: FONT_TEXT)
   smallcaps(content, all: true)
 }
+
 
 #let slides(
   content,
@@ -131,7 +138,11 @@
   }
 
   show heading.where(level: 1): x => {
-    heading-slide(x.body)
+    heading-1-slide(x.body)
+  }
+
+  show heading.where(level: 2): x => {
+    heading-2-slide(x.body)
   }
 
   content-slide(content)
