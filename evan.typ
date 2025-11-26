@@ -23,6 +23,8 @@
   default-color = color.white
 }
 
+#let scale_int = 175%
+
 
 #let title-slide(title, subtitle, authors) = {
   set page(
@@ -35,22 +37,22 @@
   set align(horizon)
   set par(leading: -6.0pt)
 
-  set text(fill: default-color, size: 120pt, weight: "semibold", font: FONT_TEXT)
-  smallcaps(text(title, tracking: -6pt, stroke: 1pt + color.luma(300)), all: true)
+  set text(fill: default-color, size: 80pt, weight: "semibold", font: FONT_TEXT)
+  scale(y: scale_int, smallcaps(text(title, stroke: 0.5pt + color.luma(300)), all: true))
 
-  v(- 4cm) // space between title and subtitle
+  v(- 1cm) // space between title and subtitle
 
-  set text(size: 40pt)
+  set text(size: 36pt)
   if subtitle != none {
-    smallcaps(text(subtitle, weight: "extrabold", tracking: -2pt), all: true)
+    scale(y: scale_int, smallcaps(text(subtitle, weight: "extrabold"), all: true))
   }
 
   set align(right)
-  set par(leading: - 0.5pt)
   if authors != none { 
     for person in authors {
-      smallcaps(person, all: true)
+      scale(y: scale_int, smallcaps(text(weight: "extrabold", person), all: true))
       linebreak()
+      v(- 3.5cm)
     }
   }
 }
@@ -58,14 +60,14 @@
 #let counter-style() = {
   let page = here().page()
   set align(right)
-  set text(size: 30pt, weight: "extrabold", font: FONT_COUNTER)
-  [#smallcaps(all: true, text(tracking: -1pt, [:#page]))]
+  set text(size: 30pt, weight: "semibold", font: FONT_COUNTER)
+  scale(y: scale_int - 50%, smallcaps(all: true, [:#page]))
 }
 
 #let heading-counter-style() = {
   let page = here().page()
-  set text(size: 36pt, weight: "extrabold")
-  [#smallcaps(all: true, text(tracking: -2pt, [EPISODE:#page]))]
+  set text(size: 36pt, weight: "semibold", font: FONT_COUNTER)
+  scale(y: scale_int, smallcaps(all: true, [EPISODE:#page]))
 }
 
 #let heading-slide(heading_title) = {
@@ -78,9 +80,9 @@
   )
   set align(left)
   set text(fill: default-color, size: 63pt, weight: "semibold", font: FONT_TEXT)
-  smallcaps(text(heading_title, tracking: -1pt), all: true)
+  scale(y: scale_int, smallcaps(text(heading_title), all: true))
 
-  v(- 2.0cm) // space between heading and counter
+  v(- 0.5cm) // space between heading and counter
 
   heading-counter-style()
 
