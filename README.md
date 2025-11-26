@@ -2,6 +2,8 @@
 
 It's template for creating presentation in the style of the title card from Evangelion.
 
+See [examples](https://github.com/ilya-grigoriev/evan/tree/main/examples).
+
 ## Usage
 
 ```typst
