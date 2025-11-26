@@ -1,26 +1,40 @@
 #let FONT_TEXT = "Cormorant"
 #let FONT_COUNTER = "Libertinus Serif"
 
-#let is_gradient_background_color = 0
-#let background-color = ()
-#if is_gradient_background_color == 1 {
-  for x in range(0, 15) {
-    background-color.push(luma(x))
+#let get-background-color(background-color) = {
+  let is-gradient-background-color = 0
+  let result-background-color = ()
+  if is-gradient-background-color == 1 {
+    for x in range(0, 15) {
+      result-background-color.push(luma(x))
+    }
+  } else {
+    if background-color == "black" {
+      result-background-color = (luma(0), luma(0))
+    } else {
+      result-background-color = (color.white, color.white)
+    }
   }
-} else {
-  background-color = (luma(0), luma(0))
+  return result-background-color
 }
 
-#let is_gradient_text_color = 0
-#let text-color = none
-#if is_gradient_text_color == 1 {
-  let gradient_text_background = ()
-  for x in range(150, 200) {
-    gradient_text_background.push(luma(x))
+#let get-text-color(background-color) = {
+  let result-text-color = none
+  let is-gradient-text-color = 0
+  if is-gradient-text-color == 1 {
+    let gradient-text-background = ()
+    for x in range(150, 200) {
+      gradient-text-background.push(luma(x))
+    }
+    result-text-color = gradient.linear(..gradient-text-background)
+  } else {
+    if background-color == "black" {
+      result-text-color = color.white
+    } else {
+      result-text-color = color.black
+    }
   }
-  text-color = gradient.linear(..gradient_text_background)
-} else {
-  text-color = color.white
+  return result-text-color
 }
 
 #let scale-int = 175%
@@ -29,11 +43,11 @@
   return color.red.transparentize(60%)
 }
 
-#let title-slide(title, subtitle, authors, red-stroke) = {
+#let title-slide(title, subtitle, authors, red-stroke, background-color, text-color) = {
   set page(
     footer: none,
     fill: gradient.linear(
-      ..background-color,
+      ..get-background-color(background-color),
       angle: 90deg
     )
   )
@@ -73,12 +87,12 @@
   scale(y: scale-int, smallcaps(all: true, [EPISODE:#page]))
 }
 
-#let heading-1-slide(heading_title, red-stroke) = {
+#let heading-1-slide(heading_title, red-stroke, background-color, text-color) = {
   set page(
     header: none,
     footer: none,
     fill: gradient.linear(
-      ..background-color,
+      ..get-background-color(background-color),
       angle: 90deg
     )
   )
@@ -91,18 +105,18 @@
   heading-counter-style()
 }
 
-#let heading-2-slide(heading_title, red-stroke) = {
+#let heading-2-slide(heading_title, red-stroke, text-color) = {
   set align(left)
   set text(fill: text-color, stroke: if red-stroke == 0 {none} else {1.5pt + get-red-stroke()}, size: 40pt, weight: "semibold", font: FONT_TEXT)
   scale(y: scale-int, smallcaps(heading_title, all: true))
 }
 
-#let content-slide(content) = {
+#let content-slide(content, background-color, text-color) = {
   set page(
     header: none,
     footer: context { counter-style() },
     fill: gradient.linear(
-      ..background-color,
+      ..get-background-color(background-color),
       angle: 90deg
     )
   )
@@ -113,6 +127,14 @@
   smallcaps(content, all: true)
 }
 
+#let check-parameters(red-stroke, background-color) = {
+  if (red-stroke != 0) and (red-stroke != 1) {
+    panic("red-stroke is not set. there are only 1 (true) or 0 (false).")
+  }
+  if (background-color != "black") and (background-color != "white") {
+    panic("background-color is not set, there are only 'black' or 'white'.")
+  }
+}
 
 #let slides(
   content,
@@ -120,7 +142,11 @@
   subtitle: none,
   authors: none,
   red-stroke: 0,
+  background-color: "black"
 ) = {
+  check-parameters(red-stroke, background-color)
+  let text-color = get-text-color(background-color)
+
   set page(
     paper: "presentation-4-3",
     margin: (x: 0.6cm, top: 0.0cm, bottom: 1.7cm),
@@ -135,19 +161,19 @@
     if (type(authors) != array) {
       authors = (authors,)
     }
-    title-slide(title, subtitle, authors, red-stroke)
+    title-slide(title, subtitle, authors, red-stroke, background-color, text-color)
   }
   else {
     panic("Title not found")
   }
 
   show heading.where(level: 1): x => {
-    heading-1-slide(x.body, red-stroke)
+    heading-1-slide(x.body, red-stroke, background-color, text-color)
   }
 
   show heading.where(level: 2): x => {
-    heading-2-slide(x.body, red-stroke)
+    heading-2-slide(x.body, red-stroke, text-color)
   }
 
-  content-slide(content)
+  content-slide(content, background-color, text-color)
 }
