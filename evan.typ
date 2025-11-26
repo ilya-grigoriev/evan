@@ -11,11 +11,18 @@
   background_color = (luma(0), luma(0))
 }
 
-#let gradient_text_background = ()
-#for x in range(150, 200) {
-  gradient_text_background.push(luma(x))
+#let is_gradient_text_color = 0
+#let default-color = none
+#if is_gradient_text_color == 1 {
+  let gradient_text_background = ()
+  for x in range(150, 200) {
+    gradient_text_background.push(luma(x))
+  }
+  default-color = gradient.linear(..gradient_text_background)
+} else {
+  default-color = color.white
 }
-#let default-color = gradient.linear(..gradient_text_background)
+
 
 #let title-slide(title, subtitle, authors) = {
   set page(
@@ -48,14 +55,22 @@
   }
 }
 
+#let counter-style() = {
+  let page = here().page()
+  set align(right)
+  set text(size: 30pt, weight: "extrabold", font: FONT_COUNTER)
+  [#smallcaps(all: true, text(tracking: -1pt, [:#page]))]
+}
+
+#let heading-counter-style() = {
+  let page = here().page()
+  set text(size: 36pt, weight: "extrabold")
+  [#smallcaps(all: true, text(tracking: -2pt, [EPISODE:#page]))]
+}
+
 #let heading-slide(heading_title) = {
   set page(
-    footer: {
-      let page = here().page()
-      set align(right)
-      set text(size: 30pt, weight: "extrabold", font: FONT_COUNTER)
-      [#smallcaps(all: true, text(tracking: -1pt, [:#page]))]
-    },
+    footer: none,
     fill: gradient.linear(
       ..background_color,
       angle: 90deg
@@ -65,17 +80,16 @@
   set text(fill: default-color, size: 63pt, weight: "semibold", font: FONT_TEXT)
   smallcaps(text(heading_title, tracking: -1pt), all: true)
 
+  v(- 2.0cm) // space between heading and counter
+
+  heading-counter-style()
+
 }
 
 #let content-slide(content) = {
   set page(
     header: none,
-    footer: context {
-      let page = here().page()
-      set align(right)
-      set text(size: 30pt, weight: "extrabold", font: FONT_COUNTER)
-      [#smallcaps(all: true, text(tracking: -1pt, [:#page]))]
-    },
+    footer: context { counter-style() },
     fill: gradient.linear(
       ..background_color,
       angle: 90deg
