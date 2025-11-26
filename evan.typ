@@ -23,7 +23,7 @@
   text-color = color.white
 }
 
-#let scale_int = 175%
+#let scale-int = 175%
 
 
 #let title-slide(title, subtitle, authors) = {
@@ -38,19 +38,19 @@
   set par(leading: -6.0pt)
 
   set text(fill: text-color, size: 80pt, weight: "semibold", font: FONT_TEXT)
-  scale(y: scale_int, smallcaps(text(title, stroke: 0.5pt + color.luma(300)), all: true))
+  scale(y: scale-int, smallcaps(text(title, stroke: 0.5pt + color.luma(300)), all: true))
 
   v(- 1cm) // space between title and subtitle
 
   set text(size: 36pt)
   if subtitle != none {
-    scale(y: scale_int, smallcaps(text(subtitle, weight: "extrabold"), all: true))
+    scale(y: scale-int, smallcaps(text(subtitle, weight: "extrabold"), all: true))
   }
 
   set align(right)
   if authors != none { 
     for person in authors {
-      scale(y: scale_int, smallcaps(text(weight: "extrabold", person), all: true))
+      scale(y: scale-int, smallcaps(text(weight: "extrabold", person), all: true))
       linebreak()
       v(- 3.5cm)
     }
@@ -61,17 +61,18 @@
   let page = here().page()
   set align(right)
   set text(size: 30pt, weight: "semibold", font: FONT_COUNTER)
-  scale(y: scale_int - 50%, smallcaps(all: true, [:#page]))
+  scale(y: scale-int - 50%, smallcaps(all: true, [:#page]))
 }
 
 #let heading-counter-style() = {
   let page = here().page()
   set text(size: 36pt, weight: "semibold", font: FONT_COUNTER)
-  scale(y: scale_int, smallcaps(all: true, [EPISODE:#page]))
+  scale(y: scale-int, smallcaps(all: true, [EPISODE:#page]))
 }
 
 #let heading-slide(heading_title) = {
   set page(
+    header: none,
     footer: none,
     fill: gradient.linear(
       ..background-color,
@@ -80,12 +81,11 @@
   )
   set align(left)
   set text(fill: text-color, size: 63pt, weight: "semibold", font: FONT_TEXT)
-  scale(y: scale_int, smallcaps(text(heading_title), all: true))
+  scale(y: scale-int, smallcaps(heading_title, all: true))
 
   v(- 0.5cm) // space between heading and counter
 
   heading-counter-style()
-
 }
 
 #let content-slide(content) = {
@@ -98,12 +98,10 @@
     )
   )
 
+  set align(center + horizon)
+  set par(justify: true, leading: 0.1cm)
   set text(fill: text-color, size: 30pt, weight: "semibold", font: FONT_TEXT)
-  set par(justify: true)
-  align(
-    center + horizon,
-    smallcaps(text(content, tracking: -1pt), all: true)
-  )
+  smallcaps(content, all: true)
 }
 
 #let slides(
@@ -115,7 +113,7 @@
   set page(
     paper: "presentation-4-3",
     margin: (x: 0.6cm, top: 0.0cm, bottom: 1.7cm),
-    header: context{
+    header: context {
       let page = here().page()
       let headings = query(selector(heading.where(level: 2)))
       let heading = headings.rev().find(x => x.location().page() <= page)
