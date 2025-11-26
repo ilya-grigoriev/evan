@@ -1,8 +1,14 @@
-#let font_counter = "Libertinus Serif"
+#let FONT_TEXT = "Cormorant"
+#let FONT_COUNTER = "Libertinus Serif"
 
-#let gradient_background = ()
-#for x in range(0, 15) {
-  gradient_background.push(luma(x))
+#let is_gradient_background_color = 0
+#let background_color = ()
+#if is_gradient_background_color == 1 {
+  for x in range(0, 15) {
+    background_color.push(luma(x))
+  }
+} else {
+  background_color = (luma(0), luma(0))
 }
 
 #let gradient_text_background = ()
@@ -15,14 +21,14 @@
   set page(
     footer: none,
     fill: gradient.linear(
-      ..gradient_background,
+      ..background_color,
       angle: 90deg
     )
   )
   set align(horizon)
   set par(leading: -6.0pt)
 
-  set text(fill: default-color, size: 120pt, weight: "semibold", font: "Cormorant")
+  set text(fill: default-color, size: 120pt, weight: "semibold", font: FONT_TEXT)
   smallcaps(text(title, tracking: -6pt, stroke: 1pt + color.luma(300)), all: true)
 
   v(- 4cm) // space between title and subtitle
@@ -47,16 +53,16 @@
     footer: {
       let page = here().page()
       set align(right)
-      set text(size: 30pt, weight: "extrabold", font: font_counter)
+      set text(size: 30pt, weight: "extrabold", font: FONT_COUNTER)
       [#smallcaps(all: true, text(tracking: -1pt, [:#page]))]
     },
     fill: gradient.linear(
-      ..gradient_background,
+      ..background_color,
       angle: 90deg
     )
   )
   set align(left)
-  set text(fill: default-color, size: 63pt, weight: "semibold", font: "Cormorant")
+  set text(fill: default-color, size: 63pt, weight: "semibold", font: FONT_TEXT)
   smallcaps(text(heading_title, tracking: -1pt), all: true)
 
 }
@@ -67,16 +73,16 @@
     footer: context {
       let page = here().page()
       set align(right)
-      set text(size: 30pt, weight: "extrabold", font: font_counter)
+      set text(size: 30pt, weight: "extrabold", font: FONT_COUNTER)
       [#smallcaps(all: true, text(tracking: -1pt, [:#page]))]
     },
     fill: gradient.linear(
-      ..gradient_background,
+      ..background_color,
       angle: 90deg
     )
   )
 
-  set text(fill: default-color, size: 30pt, weight: "semibold", font: "Cormorant")
+  set text(fill: default-color, size: 30pt, weight: "semibold", font: FONT_TEXT)
   set par(justify: true)
   align(center + horizon)[
     #smallcaps(text(content, tracking: -1pt), all: true)
