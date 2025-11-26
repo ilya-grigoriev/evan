@@ -27,7 +27,7 @@ slides(
   content,
   title: none (str),
   subtitle: none (str),
-  authors: none (for example, ("Me", "And who")),
+  authors: none (array or content),
   red-stroke: 0 (0 or 1),
   background-color: "black" ("black" or "white")
 )
