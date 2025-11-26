@@ -1,10 +1,12 @@
 #let FONT_TEXT = "Cormorant"
 #let FONT_COUNTER = "Libertinus Serif"
+#let IS-GRADIENT-TEXT-COLOR = 0
+#let IS-GRADIENT-BACKGROUND-COLOR = 0
+#let SCALE-INT = 175%
 
 #let get-background-color(background-color) = {
-  let is-gradient-background-color = 0
   let result-background-color = ()
-  if is-gradient-background-color == 1 {
+  if IS-GRADIENT-BACKGROUND-COLOR == 1 {
     for x in range(0, 15) {
       result-background-color.push(luma(x))
     }
@@ -20,8 +22,7 @@
 
 #let get-text-color(background-color) = {
   let result-text-color = none
-  let is-gradient-text-color = 0
-  if is-gradient-text-color == 1 {
+  if IS-GRADIENT-TEXT-COLOR == 1 {
     let gradient-text-background = ()
     for x in range(150, 200) {
       gradient-text-background.push(luma(x))
@@ -37,7 +38,6 @@
   return result-text-color
 }
 
-#let scale-int = 175%
 
 #let get-red-stroke() = {
   return color.red.transparentize(80%)
@@ -68,21 +68,21 @@
 
   // TITLE
   set text(fill: text-color, size: 80pt, weight: "semibold", font: FONT_TEXT)
-  scale(y: scale-int, smallcaps(text(title, stroke: get-stroke(red-stroke, background-color)), all: true))
+  scale(y: SCALE-INT, smallcaps(text(title, stroke: get-stroke(red-stroke, background-color)), all: true))
 
   v(- 1cm) // space between title and subtitle
 
   // SUBTITLE
   set text(size: 36pt)
   if subtitle != none {
-    scale(y: scale-int, smallcaps(text(subtitle, stroke: get-stroke(red-stroke, background-color), weight: "extrabold"), all: true))
+    scale(y: SCALE-INT, smallcaps(text(subtitle, stroke: get-stroke(red-stroke, background-color), weight: "extrabold"), all: true))
   }
 
   // AUTHORS
   set align(right)
   if authors != none { 
     for person in authors {
-      scale(y: scale-int, smallcaps(text(weight: "extrabold", stroke: get-stroke(red-stroke, background-color), person), all: true))
+      scale(y: SCALE-INT, smallcaps(text(weight: "extrabold", stroke: get-stroke(red-stroke, background-color), person), all: true))
       linebreak()
       v(- 3.5cm)
     }
@@ -93,13 +93,13 @@
   let page = here().page()
   set align(right)
   set text(size: 30pt, weight: "semibold", font: FONT_COUNTER)
-  scale(y: scale-int - 50%, smallcaps(all: true, [:#page]))
+  scale(y: SCALE-INT - 50%, smallcaps(all: true, [:#page]))
 }
 
 #let heading-counter-style() = {
   let page = here().page()
   set text(size: 36pt, weight: "semibold", font: FONT_COUNTER)
-  scale(y: scale-int, smallcaps(all: true, [EPISODE:#page]))
+  scale(y: SCALE-INT, smallcaps(all: true, [EPISODE:#page]))
 }
 
 #let heading-1-slide(heading_title, red-stroke, background-color, text-color) = {
@@ -113,7 +113,7 @@
   )
   set align(left)
   set text(fill: text-color, stroke: get-stroke(red-stroke, background-color), size: 63pt, weight: "semibold", font: FONT_TEXT)
-  scale(y: scale-int, smallcaps(heading_title, all: true))
+  scale(y: SCALE-INT, smallcaps(heading_title, all: true))
 
   v(- 0.5cm) // space between heading and counter
 
@@ -123,7 +123,7 @@
 #let heading-2-slide(heading_title, red-stroke, background-color, text-color) = {
   set align(left)
   set text(fill: text-color, stroke: get-stroke(red-stroke, background-color), size: 40pt, weight: "semibold", font: FONT_TEXT)
-  scale(y: scale-int, smallcaps(heading_title, all: true))
+  scale(y: SCALE-INT, smallcaps(heading_title, all: true))
 }
 
 #let content-slide(content, background-color, text-color) = {
@@ -173,12 +173,9 @@
   )
 
   if title != none {
-    if (type(authors) != array) {
-      authors = (authors,)
-    }
+    if (type(authors) != array) { authors = (authors,) }
     title-slide(title, subtitle, authors, red-stroke, background-color, text-color)
-  }
-  else {
+  } else {
     panic("Title not found")
   }
 
