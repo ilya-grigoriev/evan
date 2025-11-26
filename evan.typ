@@ -40,7 +40,7 @@
 #let scale-int = 175%
 
 #let get-red-stroke() = {
-  return color.red.transparentize(60%)
+  return color.red.transparentize(80%)
 }
 
 #let get-stroke(red-stroke, background-color) = {
