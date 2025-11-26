@@ -43,6 +43,18 @@
   return color.red.transparentize(60%)
 }
 
+#let get-stroke(red-stroke, background-color) = {
+  if red-stroke == 0 {
+    if background-color == "black" {
+      0.5pt + color.luma(300)
+    } else {
+      none
+    }
+  } else {
+    1.5pt + get-red-stroke()
+  }
+}
+
 #let title-slide(title, subtitle, authors, red-stroke, background-color, text-color) = {
   set page(
     footer: none,
@@ -54,20 +66,23 @@
   set align(horizon)
   set par(leading: -6.0pt)
 
+  // TITLE
   set text(fill: text-color, size: 80pt, weight: "semibold", font: FONT_TEXT)
-  scale(y: scale-int, smallcaps(text(title, stroke: if red-stroke == 0 {0.5pt + color.luma(300)} else {1.5pt + get-red-stroke()} ), all: true))
+  scale(y: scale-int, smallcaps(text(title, stroke: get-stroke(red-stroke, background-color)), all: true))
 
   v(- 1cm) // space between title and subtitle
 
+  // SUBTITLE
   set text(size: 36pt)
   if subtitle != none {
-    scale(y: scale-int, smallcaps(text(subtitle, stroke: if red-stroke == 0 {0.5pt + color.luma(300)} else {1.5pt + get-red-stroke()}, weight: "extrabold"), all: true))
+    scale(y: scale-int, smallcaps(text(subtitle, stroke: get-stroke(red-stroke, background-color), weight: "extrabold"), all: true))
   }
 
+  // AUTHORS
   set align(right)
   if authors != none { 
     for person in authors {
-      scale(y: scale-int, smallcaps(text(weight: "extrabold", stroke: if red-stroke == 0 {0.5pt + color.luma(300)} else {1.5pt + get-red-stroke()}, person), all: true))
+      scale(y: scale-int, smallcaps(text(weight: "extrabold", stroke: get-stroke(red-stroke, background-color), person), all: true))
       linebreak()
       v(- 3.5cm)
     }
@@ -97,7 +112,7 @@
     )
   )
   set align(left)
-  set text(fill: text-color, stroke: if red-stroke == 0 {none} else {1.5pt + get-red-stroke()}, size: 63pt, weight: "semibold", font: FONT_TEXT)
+  set text(fill: text-color, stroke: get-stroke(red-stroke, background-color), size: 63pt, weight: "semibold", font: FONT_TEXT)
   scale(y: scale-int, smallcaps(heading_title, all: true))
 
   v(- 0.5cm) // space between heading and counter
@@ -105,9 +120,9 @@
   heading-counter-style()
 }
 
-#let heading-2-slide(heading_title, red-stroke, text-color) = {
+#let heading-2-slide(heading_title, red-stroke, background-color, text-color) = {
   set align(left)
-  set text(fill: text-color, stroke: if red-stroke == 0 {none} else {1.5pt + get-red-stroke()}, size: 40pt, weight: "semibold", font: FONT_TEXT)
+  set text(fill: text-color, stroke: get-stroke(red-stroke, background-color), size: 40pt, weight: "semibold", font: FONT_TEXT)
   scale(y: scale-int, smallcaps(heading_title, all: true))
 }
 
@@ -172,7 +187,7 @@
   }
 
   show heading.where(level: 2): x => {
-    heading-2-slide(x.body, red-stroke, text-color)
+    heading-2-slide(x.body, red-stroke, background-color, text-color)
   }
 
   content-slide(content, background-color, text-color)
