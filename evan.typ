@@ -2,25 +2,25 @@
 #let FONT_COUNTER = "Libertinus Serif"
 
 #let is_gradient_background_color = 0
-#let background_color = ()
+#let background-color = ()
 #if is_gradient_background_color == 1 {
   for x in range(0, 15) {
-    background_color.push(luma(x))
+    background-color.push(luma(x))
   }
 } else {
-  background_color = (luma(0), luma(0))
+  background-color = (luma(0), luma(0))
 }
 
 #let is_gradient_text_color = 0
-#let default-color = none
+#let text-color = none
 #if is_gradient_text_color == 1 {
   let gradient_text_background = ()
   for x in range(150, 200) {
     gradient_text_background.push(luma(x))
   }
-  default-color = gradient.linear(..gradient_text_background)
+  text-color = gradient.linear(..gradient_text_background)
 } else {
-  default-color = color.white
+  text-color = color.white
 }
 
 #let scale_int = 175%
@@ -30,14 +30,14 @@
   set page(
     footer: none,
     fill: gradient.linear(
-      ..background_color,
+      ..background-color,
       angle: 90deg
     )
   )
   set align(horizon)
   set par(leading: -6.0pt)
 
-  set text(fill: default-color, size: 80pt, weight: "semibold", font: FONT_TEXT)
+  set text(fill: text-color, size: 80pt, weight: "semibold", font: FONT_TEXT)
   scale(y: scale_int, smallcaps(text(title, stroke: 0.5pt + color.luma(300)), all: true))
 
   v(- 1cm) // space between title and subtitle
@@ -74,12 +74,12 @@
   set page(
     footer: none,
     fill: gradient.linear(
-      ..background_color,
+      ..background-color,
       angle: 90deg
     )
   )
   set align(left)
-  set text(fill: default-color, size: 63pt, weight: "semibold", font: FONT_TEXT)
+  set text(fill: text-color, size: 63pt, weight: "semibold", font: FONT_TEXT)
   scale(y: scale_int, smallcaps(text(heading_title), all: true))
 
   v(- 0.5cm) // space between heading and counter
@@ -93,16 +93,17 @@
     header: none,
     footer: context { counter-style() },
     fill: gradient.linear(
-      ..background_color,
+      ..background-color,
       angle: 90deg
     )
   )
 
-  set text(fill: default-color, size: 30pt, weight: "semibold", font: FONT_TEXT)
+  set text(fill: text-color, size: 30pt, weight: "semibold", font: FONT_TEXT)
   set par(justify: true)
-  align(center + horizon)[
-    #smallcaps(text(content, tracking: -1pt), all: true)
-  ]
+  align(
+    center + horizon,
+    smallcaps(text(content, tracking: -1pt), all: true)
+  )
 }
 
 #let slides(
