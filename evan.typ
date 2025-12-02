@@ -1,7 +1,7 @@
 #let FONT_TEXT = "Cormorant"
 #let FONT_COUNTER = "Libertinus Serif"
 #let BOLDNESS-FOR-TITLE = "semibold"
-#let BOLDNESS-FOR-SUBTITLE = "semibold"
+#let BOLDNESS-FOR-SUBTITLE = "extrabold"
 #let BOLDNESS-FOR-AUTHORS = "extrabold"
 #let BOLDNESS-FOR-HEADING-1 = "semibold"
 #let BOLDNESS-FOR-HEADING-2 = "semibold"
@@ -11,7 +11,8 @@
 
 #let IS-GRADIENT-TEXT-COLOR = 0
 #let IS-GRADIENT-BACKGROUND-COLOR = 0
-#let SCALE-INT = 175%
+#let VERTICAL-SCALE-INT = 175%
+#let HORIZONTAL-SCALE-INT = 79% // default 100%
 
 #let get-background-color(background-color) = {
   let result-background-color = ()
@@ -77,21 +78,21 @@
 
   // TITLE
   set text(fill: text-color, size: 80pt, weight: BOLDNESS-FOR-TITLE, font: FONT_TEXT)
-  scale(y: SCALE-INT, x: 79%, smallcaps(text(title, stroke: get-stroke(red-stroke, background-color)), all: true))
+  scale(y: VERTICAL-SCALE-INT, x: HORIZONTAL-SCALE-INT, smallcaps(text(title, stroke: get-stroke(red-stroke, background-color)), all: true))
 
   v(- 1cm) // space between title and subtitle
 
   // SUBTITLE
   set text(size: 36pt)
   if subtitle != none {
-    scale(y: SCALE-INT, smallcaps(text(subtitle, stroke: get-stroke(red-stroke, background-color), weight: BOLDNESS-FOR-SUBTITLE), all: true))
+    scale(y: VERTICAL-SCALE-INT, x: HORIZONTAL-SCALE-INT, smallcaps(text(subtitle, stroke: get-stroke(red-stroke, background-color), weight: BOLDNESS-FOR-SUBTITLE), all: true))
   }
 
   // AUTHORS
   set align(right)
   if authors != none { 
     for person in authors {
-      scale(y: SCALE-INT, smallcaps(text(weight: BOLDNESS-FOR-AUTHORS, stroke: get-stroke(red-stroke, background-color), person), all: true))
+      scale(y: VERTICAL-SCALE-INT, x: HORIZONTAL-SCALE-INT, smallcaps(text(weight: BOLDNESS-FOR-AUTHORS, stroke: get-stroke(red-stroke, background-color), person), all: true))
       linebreak()
       v(- 3.5cm)
     }
@@ -102,13 +103,13 @@
   let page = here().page()
   set align(right)
   set text(size: 30pt, weight: BOLDNESS-FOR-COUNTER, font: FONT_COUNTER)
-  scale(y: SCALE-INT - 50%, smallcaps(all: true, [:#page]))
+  scale(y: VERTICAL-SCALE-INT - 50%, smallcaps(all: true, [:#page]))
 }
 
 #let heading-counter-style() = {
   let page = here().page()
   set text(size: 36pt, weight: BOLDNESS-FOR-HEADING-COUNTER, font: FONT_COUNTER)
-  scale(y: SCALE-INT, smallcaps(all: true, [EPISODE:#page]))
+  scale(y: VERTICAL-SCALE-INT, smallcaps(all: true, [EPISODE:#page]))
 }
 
 #let heading-1-slide(heading_title, red-stroke, background-color, text-color) = {
@@ -122,7 +123,7 @@
   )
   set align(left)
   set text(fill: text-color, stroke: get-stroke(red-stroke, background-color), size: 63pt, weight: BOLDNESS-FOR-HEADING-1, font: FONT_TEXT)
-  scale(y: SCALE-INT, smallcaps(heading_title, all: true))
+  scale(y: VERTICAL-SCALE-INT, x: HORIZONTAL-SCALE-INT, smallcaps(heading_title, all: true))
 
   v(- 0.5cm) // space between heading and counter
 
@@ -132,7 +133,7 @@
 #let heading-2-slide(heading_title, red-stroke, background-color, text-color) = {
   set align(left)
   set text(fill: text-color, stroke: get-stroke(red-stroke, background-color), size: 40pt, weight: BOLDNESS-FOR-HEADING-2, font: FONT_TEXT)
-  scale(y: SCALE-INT, smallcaps(heading_title, all: true))
+  scale(y: VERTICAL-SCALE-INT, x: HORIZONTAL-SCALE-INT, smallcaps(heading_title, all: true))
 }
 
 #let content-slide(content, background-color, text-color) = {
@@ -173,7 +174,7 @@
 
   set page(
     paper: "presentation-4-3",
-    margin: (x: 0.6cm, top: 0.0cm, bottom: 1.7cm),
+    margin: (x: 1.5cm, top: 0.0cm, bottom: 2.0cm),
     header: context {
       let page = here().page()
       let headings = query(selector(heading.where(level: 2)))
