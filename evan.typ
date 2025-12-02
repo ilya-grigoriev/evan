@@ -1,5 +1,6 @@
 #let FONT_TEXT = "Cormorant"
 #let FONT_COUNTER = "Libertinus Serif"
+#let IS-BOLD-FOR-TITLE = 0
 #let IS-GRADIENT-TEXT-COLOR = 0
 #let IS-GRADIENT-BACKGROUND-COLOR = 0
 #let SCALE-INT = 175%
@@ -67,8 +68,8 @@
   set par(leading: -6.0pt)
 
   // TITLE
-  set text(fill: text-color, size: 80pt, weight: "semibold", font: FONT_TEXT)
-  scale(y: SCALE-INT, smallcaps(text(title, stroke: get-stroke(red-stroke, background-color)), all: true))
+  set text(fill: text-color, size: 80pt, weight: if (IS-BOLD-FOR-TITLE == 1) { "semibold" } else { "regular" }, font: FONT_TEXT)
+  scale(y: SCALE-INT, x: 79%, smallcaps(text(title, stroke: get-stroke(red-stroke, background-color)), all: true))
 
   v(- 1cm) // space between title and subtitle
 
