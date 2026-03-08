@@ -1,0 +1,13 @@
+[package]
+# mandatory fields
+name = "evan" 
+version = "0.1.0"
+entrypoint = "evan.typ"
+authors = ["ilya-grigoriev <https://github.com/ilya-grigoriev>"]
+license = "GPL-3.0-only"
+description = "A template for creating presentations in the style of the title card from Evangelion."
+
+# optional fields
+repository = "https://github.com/ilya-grigoriev/evan"
+categories = ["presentation"]
+exclude = ["examples/"]
